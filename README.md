@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Project: BtlJSP (reorganized MVC layout)
 
 What changed
@@ -36,3 +37,7 @@ Notes and next steps
 
 Contact
 - Let me know if you want the JSPs moved back or the README adjusted (Vietnamese or English).
+=======
+# QlyCungUngVatTu
+JSP
+>>>>>>> 4d6d0a85915b2cffa634f5c7294b27eb70ffad9f
