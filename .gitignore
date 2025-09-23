@@ -1,0 +1,16 @@
+# Ignore build outputs and logs
+/dist/
+/target/
+/logs/
+/*.war
+/WEB-INF/classes/
+/WEB-INF/lib/
+*.class
+hs_err_pid*.log
+replay_pid*.log
+/.idea/
+/.vscode/
+*.iml
+\n# Keep source webapp files (do not ignore src/main/webapp)
+# (we will move JSPs into the maven webapp folder)
+archive_*/

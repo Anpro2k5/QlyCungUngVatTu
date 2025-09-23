@@ -1,0 +1,17 @@
+# Sample external db.properties for Tomcat conf
+# Copy this to C:\xampp\tomcat\conf\db.properties OR set -Dexternal.db.properties=path\to\db.properties
+
+# JDBC URL (adjust host, port, database name and parameters as needed)
+db.url=jdbc:mysql://localhost:3306/btldb?useSSL=false&serverTimezone=UTC
+
+# Database credentials
+# IMPORTANT: replace these with your real DB user and password; do NOT commit secrets to VCS.
+db.user=btldb_user
+db.password=change_me
+
+# Optional: number of connections for HikariCP
+# If omitted, Hikari's default will be used (10)
+db.poolSize=10
+
+# Optional diagnostic properties
+# db.testQuery=SELECT 1
