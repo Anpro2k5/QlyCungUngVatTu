@@ -1,32 +1,26 @@
 package com.btljsp.dao;
 
 import com.btljsp.model.NhanVien;
+import com.utils.DBConnection;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NhanVienDAO {
-    private Connection conn;
-
-    public NhanVienDAO(Connection conn) {
-        this.conn = conn;
-    }
-
     public List<NhanVien> getAll() {
         List<NhanVien> list = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM nhanvien";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+        String sql = "SELECT * FROM nhanvien";
+        try (Connection conn = DBConnection.getConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new NhanVien(
-                    rs.getInt("id"),
-                    rs.getString("ten"),
-                    rs.getString("chucvu"),
-                    rs.getString("sdt"),
-                    rs.getInt("phanxuong_id")
-                ));
+                NhanVien nv = new NhanVien();
+                nv.setId(rs.getInt("id"));
+                nv.setTen(rs.getString("ten"));
+                nv.setChucVu(rs.getString("chucvu"));
+                list.add(nv);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;

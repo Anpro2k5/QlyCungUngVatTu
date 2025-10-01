@@ -6,7 +6,35 @@
 
     <display-name>BTLJSP</display-name>
 
+    <!-- Trang mặc định -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
+    <!-- ================== LOGIN FILTER ================== -->
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.btljsp.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- ================== ROLE FILTER ================== -->
+    <filter>
+        <filter-name>RoleFilter</filter-name>
+        <filter-class>com.btljsp.filter.RoleFilter</filter-class>
+    </filter>
+    <!-- Chỉ admin mới được truy cập -->
+    <filter-mapping>
+        <filter-name>RoleFilter</filter-name>
+        <url-pattern>/admin.jsp</url-pattern>
+    </filter-mapping>
+    <!-- Chỉ manager mới được truy cập -->
+    <filter-mapping>
+        <filter-name>RoleFilter</filter-name>
+        <url-pattern>/manager.jsp</url-pattern>
+    </filter-mapping>
+
 </web-app>

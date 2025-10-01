@@ -1,49 +1,60 @@
 package com.btljsp.dao;
 
 import com.btljsp.model.User;
-import com.btljsp.dao.DBConnection;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.utils.DBConnection;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 
-    public User findByUsername(String username) throws SQLException {
-        String sql = "SELECT id, username, password_hash, fullname, email, active, created_at FROM users WHERE username = ?";
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    public User login(String username, String password) {
+        String sql = "SELECT * FROM users WHERE username=? AND password=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
+            ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     User u = new User();
-                    u.setId(rs.getInt("id"));
+                    u.setUserId(rs.getInt("user_id"));
                     u.setUsername(rs.getString("username"));
-                    u.setPasswordHash(rs.getString("password_hash"));
-                    u.setFullname(rs.getString("fullname"));
-                    u.setEmail(rs.getString("email"));
-                    u.setActive(rs.getBoolean("active"));
-                    u.setCreatedAt(rs.getTimestamp("created_at"));
+                    u.setPassword(rs.getString("password"));
+                    u.setRole(rs.getString("role"));
+                    int nvId = rs.getInt("nhanvien_id");
+                    if (!rs.wasNull()) {
+                        u.setNhanvienId(nvId);
+                    }
                     return u;
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
-    public int insert(User u) throws SQLException {
-        String sql = "INSERT INTO users (username, password_hash, fullname, email, active) VALUES (?,?,?,?,?)";
-        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, u.getUsername());
-            ps.setString(2, u.getPasswordHash());
-            ps.setString(3, u.getFullname());
-            ps.setString(4, u.getEmail());
-            ps.setBoolean(5, u.isActive());
-            ps.executeUpdate();
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) return rs.getInt(1);
+    public List<User> getAll() {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+        try (Connection conn = DBConnection.getConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            while (rs.next()) {
+                User u = new User();
+                u.setUserId(rs.getInt("user_id"));
+                u.setUsername(rs.getString("username"));
+                u.setPassword(rs.getString("password"));
+                u.setRole(rs.getString("role"));
+                int nvId = rs.getInt("nhanvien_id");
+                if (!rs.wasNull()) {
+                    u.setNhanvienId(nvId);
+                }
+                list.add(u);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return -1;
+        return list;
     }
 }

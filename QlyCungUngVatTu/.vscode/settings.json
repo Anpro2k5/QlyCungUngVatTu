@@ -14,5 +14,6 @@
             "database": "cungungvattu",
             "username": "root"
         }
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "disabled"
 }

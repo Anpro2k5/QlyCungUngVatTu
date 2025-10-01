@@ -1,39 +1,36 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="java.util.*,com.btljsp.model.NhanVien" %>
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Danh sách Nhân viên</title>
-    <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 <body>
-<header>
-    <h1>Danh sách Nhân viên</h1>
-</header>
-
-<nav>
-    <a href="../../index.jsp">Trang chủ</a>
-    <a href="../../nhanvien">Nhân viên</a>
-    <a href="../../mathang">Mặt hàng</a>
-    <a href="../../phanxuong">Phân xưởng</a>
-    <a href="../../phieuxuathang">Phiếu xuất</a>
-</nav>
-
-<div class="container">
-    <a href="form.jsp">➕ Thêm Nhân viên</a>
-    <table>
+<h2>Danh sách Nhân viên</h2>
+<a href="new">Thêm nhân viên</a>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th><th>Tên</th><th>Chức vụ</th><th>SĐT</th><th>Hành động</th>
+    </tr>
+    <%
+        List<NhanVien> list = (List<NhanVien>) request.getAttribute("list");
+        if (list != null) {
+            for (NhanVien nv : list) {
+    %>
         <tr>
-            <th>ID</th><th>Tên</th><th>Chức vụ</th><th>SĐT</th>
+            <td><%=nv.getId()%></td>
+            <td><%=nv.getTen()%></td>
+            <td><%=nv.getChucVu()%></td>
+            <td><%=nv.getSdt()%></td>
+            <td>
+                <a href="edit?id=<%=nv.getId()%>">Sửa</a>
+                <a href="delete?id=<%=nv.getId()%>" onclick="return confirm('Xóa nhân viên này?')">Xóa</a>
+            </td>
         </tr>
-        <c:forEach var="nv" items="${listNV}">
-            <tr>
-                <td>${nv.id}</td>
-                <td>${nv.ten}</td>
-                <td>${nv.chucvu}</td>
-                <td>${nv.sdt}</td>
-            </tr>
-        </c:forEach>
-    </table>
-</div>
+    <%      }
+        }
+    %>
+</table>
 </body>
 </html>
-

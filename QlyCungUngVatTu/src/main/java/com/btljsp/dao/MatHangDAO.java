@@ -1,33 +1,40 @@
 package com.btljsp.dao;
 
 import com.btljsp.model.MatHang;
+import com.utils.DBConnection;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MatHangDAO {
-    private Connection conn;
-
-    public MatHangDAO(Connection conn) {
-        this.conn = conn;
-    }
-
     public List<MatHang> getAll() {
         List<MatHang> list = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM mathang";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+        String sql = "SELECT * FROM mathang";
+        try (Connection conn = DBConnection.getConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new MatHang(
-                    rs.getInt("id"),
-                    rs.getString("ten"),
-                    rs.getString("donvitinh"),
-                    rs.getInt("soluong")
-                ));
+                MatHang m = new MatHang();
+                m.setId(rs.getInt("id"));
+                m.setTenHang(rs.getString("tenhang"));
+                m.setDonGia(rs.getDouble("dongia"));
+                list.add(m);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public void insert(MatHang mh) {
+        String sql = "INSERT INTO mathang(tenhang, dongia) VALUES(?,?)";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, mh.getTenHang());
+            ps.setDouble(2, mh.getDonGia());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

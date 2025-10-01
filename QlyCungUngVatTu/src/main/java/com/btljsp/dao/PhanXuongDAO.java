@@ -1,30 +1,25 @@
 package com.btljsp.dao;
 
 import com.btljsp.model.PhanXuong;
+import com.utils.DBConnection;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PhanXuongDAO {
-    private Connection conn;
-
-    public PhanXuongDAO(Connection conn) {
-        this.conn = conn;
-    }
-
     public List<PhanXuong> getAll() {
         List<PhanXuong> list = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM phanxuong";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+        String sql = "SELECT * FROM phanxuong";
+        try (Connection conn = DBConnection.getConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new PhanXuong(
-                    rs.getInt("id"),
-                    rs.getString("ten"),
-                    rs.getString("diachi")
-                ));
+                PhanXuong px = new PhanXuong();
+                px.setId(rs.getInt("id"));
+                px.setTen(rs.getString("ten"));
+                list.add(px);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;

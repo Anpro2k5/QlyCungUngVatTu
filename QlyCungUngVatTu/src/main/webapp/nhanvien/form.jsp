@@ -1,63 +1,23 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-         http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <groupId>com.example</groupId>
-    <artifactId>BTLJSP</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
-
-    <name>BTLJSP</name>
-
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-    <dependencies>
-        <!-- Servlet API -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- JSTL -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
-
-        <!-- MySQL JDBC -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <finalName>BTLJSP</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
-            </plugin>
-        </plugins>
-    </build>
-</project>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="com.btljsp.model.NhanVien" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Form Nhân viên</title>
+</head>
+<body>
+<%
+    NhanVien nv = (NhanVien) request.getAttribute("nv");
+%>
+<h2><%= (nv == null ? "Thêm nhân viên" : "Sửa nhân viên") %></h2>
+<form method="post" action="">
+    <input type="hidden" name="id" value="<%= (nv == null ? "" : nv.getId()) %>">
+    Tên: <input type="text" name="ten" value="<%= (nv == null ? "" : nv.getTen()) %>"><br>
+    Chức vụ: <input type="text" name="chucvu" value="<%= (nv == null ? "" : nv.getChucVu()) %>"><br>
+    SĐT: <input type="text" name="sdt" value="<%= (nv == null ? "" : nv.getSdt()) %>"><br>
+    <button type="submit">Lưu</button>
+</form>
+<a href="list">Quay lại</a>
+</body>
+</html>

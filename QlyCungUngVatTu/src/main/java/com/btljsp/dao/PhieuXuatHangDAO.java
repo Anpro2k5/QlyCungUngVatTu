@@ -1,28 +1,25 @@
 package com.btljsp.dao;
 
 import com.btljsp.model.PhieuXuatHang;
+import com.utils.DBConnection;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PhieuXuatHangDAO {
-    private Connection conn;
-
-    public PhieuXuatHangDAO(Connection conn) {
-        this.conn = conn;
-    }
-
     public List<PhieuXuatHang> getAll() {
         List<PhieuXuatHang> list = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM phieuxuathang";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+        String sql = "SELECT * FROM phieuxuathang";
+        try (Connection conn = DBConnection.getConnection();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
             while (rs.next()) {
-                list.add(new PhieuXuatHang(
-                        rs.getInt("id"),
-                        rs.getDate("ngayxuat")));
+                PhieuXuatHang px = new PhieuXuatHang();
+                px.setId(rs.getInt("id"));
+                px.setNgay(rs.getDate("ngay"));
+                list.add(px);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
